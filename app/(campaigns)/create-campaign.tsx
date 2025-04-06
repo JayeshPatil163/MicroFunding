@@ -16,7 +16,7 @@ export default function CreateCampaign() {
     financialProjections: '',
     teamInfo: '',
     marketAnalysis: '',
-    image: '',
+    //image: '',
     riskFactors: '',
   });
 
@@ -31,7 +31,7 @@ export default function CreateCampaign() {
             minimumInvestment: formData.minimumInvestment,
             businessPlan: formData.businessPlan,
             financialProjections: formData.financialProjections,
-            image: formData.image,
+            //image: formData.image,
             marketAnalysis: formData.marketAnalysis,
             riskFactors: formData.riskFactors
           };
@@ -42,7 +42,7 @@ export default function CreateCampaign() {
           if (res && res.data) {
             console.log("Campaign created:", res.data);
             router.back();
-          }
+  }
         } catch (error) {
           console.error('Error creating campaign:', error);
         }
@@ -133,10 +133,10 @@ export default function CreateCampaign() {
         </View>
 
         <View style={styles.inputGroup}>
-          <Text style={styles.label}>Financial Projections</Text>
+          <Text style={styles.label}>Provide Campaign Image</Text>
           <TextInput
             style={[styles.input, styles.textArea]}
-            value={formData.financialProjections}
+            value={formData.image}
             onChangeText={(text) => setFormData({ ...formData, image: text })}
             placeholder="Please enter campaign image URL"
           />

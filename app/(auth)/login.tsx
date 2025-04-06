@@ -9,19 +9,25 @@ export default function Login() {
   const [password, setPassword] = useState('');
 
   const handleLogin = async () => {
-    // TODO: Implement login logic
-
     let res = null;
     try {
-      res = await axios.get('http://192.168.151.227:3000/orgs/', {
-        params: { email },
+      res = await axios.get('http://192.168.151.227:3000/orgs/all');
+      const matchedOrg = res.data.find((org: any) => org.email === email);
+
+      if (!matchedOrg) {
+        alert('Invalid credentials');
+        return;
+      }
+
+      console.log(matchedOrg);
+      //router.replace('/(tabs)/pitch-point');
+      router.replace({
+        pathname: '/(tabs)/pitch-point',
+        params: { user : JSON.stringify(matchedOrg) },
       });
-      console.log(res.data);
-    }
-    catch (err) {
+    } catch (err) {
       console.log(err);
     }
-    router.replace('/(tabs)/pitch-point');
   };
 
   return (

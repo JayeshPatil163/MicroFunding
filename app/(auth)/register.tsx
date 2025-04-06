@@ -33,6 +33,7 @@ export default function Register() {
       setStep(step + 1);
     } else {
       // Submit form data
+      //router.replace('/(tabs)/pitch-point');
       console.log(formData);
       let res = null;
       try {
