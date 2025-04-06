@@ -42,11 +42,11 @@ export default function Fundings() {
   const [activeTab, setActiveTab] = useState('all');
 
   const handleCreateCampaign = () => {
-    router.replace('/(campaigns)/create-campaign');
+    router.push('/(campaigns)/create-campaign');
   };
 
   const handleCampaignPress = (campaignId: string) => {
-    router.replace(`/(campaigns)/${campaignId}`);
+    router.push(`/(campaigns)/${campaignId}`);
   };
 
   const renderCampaignCard = ({ item }: { item: Campaign }) => {

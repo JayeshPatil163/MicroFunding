@@ -2,11 +2,12 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, TextInput, TouchableOpacity } from 'react-native';
 import { router } from 'expo-router';
 import { Campaign } from '../../types/campaign';
+import axios from 'axios';
+
 
 export default function CreateCampaign() {
   const [formData, setFormData] = useState<Partial<Campaign>>({
     title: '',
-    company: '',
     description: '',
     targetAmount: 0,
     equity: 0,
@@ -15,20 +16,36 @@ export default function CreateCampaign() {
     financialProjections: '',
     teamInfo: '',
     marketAnalysis: '',
+    image: '',
     riskFactors: '',
   });
 
   const handleSubmit = async () => {
     try {
-      // TODO: Backend Integration
-      // 1. Upload image to storage service
-      // 2. Send campaign data to API
-      // const response = await api.post('/campaigns', formData);
-      // 3. Handle success/error
-      router.back();
-    } catch (error) {
-      console.error('Error creating campaign:', error);
-    }
+        const campaignData = {
+            title: formData.title,
+            company: formData.company,
+            description: formData.description,
+            targetAmount: formData.targetAmount,
+            equity: formData.equity,
+            minimumInvestment: formData.minimumInvestment,
+            businessPlan: formData.businessPlan,
+            financialProjections: formData.financialProjections,
+            image: formData.image,
+            marketAnalysis: formData.marketAnalysis,
+            riskFactors: formData.riskFactors
+          };
+      
+          // Send campaign data to the campaign API endpoint
+          const res = await axios.post('http://192.168.151.227:3000/campaigns', campaignData);
+          
+          if (res && res.data) {
+            console.log("Campaign created:", res.data);
+            router.back();
+          }
+        } catch (error) {
+          console.error('Error creating campaign:', error);
+        }
   };
 
   return (
@@ -43,16 +60,6 @@ export default function CreateCampaign() {
             value={formData.title}
             onChangeText={(text) => setFormData({ ...formData, title: text })}
             placeholder="Enter campaign title"
-          />
-        </View>
-
-        <View style={styles.inputGroup}>
-          <Text style={styles.label}>Company Name</Text>
-          <TextInput
-            style={styles.input}
-            value={formData.company}
-            onChangeText={(text) => setFormData({ ...formData, company: text })}
-            placeholder="Enter company name"
           />
         </View>
 
@@ -122,6 +129,16 @@ export default function CreateCampaign() {
             placeholder="Enter financial projections"
             multiline
             numberOfLines={4}
+          />
+        </View>
+
+        <View style={styles.inputGroup}>
+          <Text style={styles.label}>Financial Projections</Text>
+          <TextInput
+            style={[styles.input, styles.textArea]}
+            value={formData.financialProjections}
+            onChangeText={(text) => setFormData({ ...formData, image: text })}
+            placeholder="Please enter campaign image URL"
           />
         </View>
 

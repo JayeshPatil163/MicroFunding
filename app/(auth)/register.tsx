@@ -3,20 +3,23 @@ import { View, Text, TextInput, StyleSheet, ScrollView, TouchableOpacity } from 
 import { router } from 'expo-router';
 import { Building2, Users, Mail, Lock, Phone, Globe, Briefcase, ArrowLeft, User2Icon } from 'lucide-react-native';
 import Profile from '../(tabs)/profile';
+import axios from 'axios';
 
 export default function Register() {
   const [formData, setFormData] = useState({
-    organizationName: '',
-    businessDomain: '',
-    employeeCount: '',
-    founder: '',
+    name: '', // was organizationName
+    industry: '', // was businessDomain
+    numberOfEmployees: '', // was employeeCount
     email: '',
-    password: '',
     phone: '',
+    password: '',
     website: '',
     location: '',
-    description: '',
+    businessDescription: '',
+    faqs: '', // you may need to adjust this depending on how you're collecting FAQs
   });
+
+
 
   const handleRegister = () => {
     // TODO: Implement registration logic
@@ -31,27 +34,23 @@ export default function Register() {
     } else {
       // Submit form data
       console.log(formData);
+      let res = null;
+      try {
+        res = await axios.post('http://192.168.151.227:3000/orgs/register', formData);
+        console.log(res.data);
+      }
+      catch (err) {
+        console.log(err);
+      }
 
-      // const worker = {
-      //   ...formData,
-      //   registeredFrom: 'worker',
-      //   experinceLevel: formData.experience,
-      // }
-      // let res = null;
-      // try {
-      //   res = await axios.post('http://192.168.198.244:3000/worker/register', worker);
-      //   console.log(res.data);
-      // }
-      // catch (err) {
-      //   console.log(err);
-      // }
-
-      // if (res && res.data) {
-        router.replace('/(tabs)/pitch-point');
-          // params: { user : JSON.stringify(res.data) },
-        //});
+      if (res && res.data) {
+        router.replace({
+          pathname: '/(tabs)/pitch-point',
+          params: { user : JSON.stringify(res.data) },
+        });
       }
     }
+  }
 
   return (
     <ScrollView style={styles.container}>
@@ -87,8 +86,8 @@ export default function Register() {
             <TextInput
               style={styles.input}
               placeholder="Organization Name"
-              value={formData.organizationName}
-              onChangeText={(text) => setFormData({ ...formData, organizationName: text })}
+              value={formData.name}
+              onChangeText={(text) => setFormData({ ...formData, name: text })}
             />
           </View>
       
@@ -97,12 +96,12 @@ export default function Register() {
             <TextInput
               style={styles.input}
               placeholder="Business Domain"
-              value={formData.businessDomain}
-              onChangeText={(text) => setFormData({ ...formData, businessDomain: text })}
+              value={formData.industry}
+              onChangeText={(text) => setFormData({ ...formData, industry: text })}
             />
           </View>
 
-          <View style={styles.inputContainer}>
+          {/* <View style={styles.inputContainer}>
             <User2Icon size={20} color="#666" />
               <TextInput
                 style={styles.input}
@@ -110,7 +109,7 @@ export default function Register() {
                 value={formData.founder}
                 onChangeText={(text) => setFormData({ ...formData, founder: text })}
               />
-          </View>
+          </View> */}
 
           <View style={styles.inputContainer}>
             <Phone size={20} color="#666" />
@@ -144,8 +143,8 @@ export default function Register() {
             style={styles.input}
             placeholder="Number of Employees"
             keyboardType="number-pad"
-            value={formData.employeeCount}
-            onChangeText={(text) => setFormData({ ...formData, employeeCount: text })}
+            value={formData.numberOfEmployees}
+            onChangeText={(text) => setFormData({ ...formData, numberOfEmployees: text })}
           />
         </View>
 
@@ -177,15 +176,11 @@ export default function Register() {
           placeholder="Business Description"
           multiline
           numberOfLines={4}
-          value={formData.description}
-          onChangeText={(text) => setFormData({ ...formData, description: text })}
+          value={formData.businessDescription}
+          onChangeText={(text) => setFormData({ ...formData, businessDescription: text })}
         />
         </>
       )}
-
-        {/* <TouchableOpacity style={styles.button} onPress={handleRegister}>
-          <Text style={styles.buttonText}>Create Account</Text>
-        </TouchableOpacity> */}
 
         <TouchableOpacity 
           style={styles.loginLink}

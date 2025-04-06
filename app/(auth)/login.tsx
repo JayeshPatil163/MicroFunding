@@ -2,13 +2,25 @@ import { useState } from 'react';
 import { View, Text, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
 import { router } from 'expo-router';
 import { Mail, Lock } from 'lucide-react-native';
+import axios from 'axios';
 
 export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     // TODO: Implement login logic
+
+    let res = null;
+    try {
+      res = await axios.get('http://192.168.151.227:3000/orgs/', {
+        params: { email },
+      });
+      console.log(res.data);
+    }
+    catch (err) {
+      console.log(err);
+    }
     router.replace('/(tabs)/pitch-point');
   };
 
